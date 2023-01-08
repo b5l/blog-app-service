@@ -24,7 +24,6 @@ func (h *Handler) LoginHandler(c *gin.Context) {
 	if err := c.BindJSON(&getUser); err != nil {
 		return
 	}
-	// fmt.Println(getUser)
 
 	isAuth, errx := h.LoginDAO.GetUser(c, getUser.Username, getUser.Password)
 
