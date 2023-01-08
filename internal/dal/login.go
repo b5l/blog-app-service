@@ -6,7 +6,6 @@ import (
 	"blog-app-service/internal/pkg/dto"
 	"context"
 	"database/sql"
-	"fmt"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -38,7 +37,6 @@ func (u *LoginDAO) GetUser(ctx context.Context, username string, password string
 			}
 		}
 	}
-	fmt.Println(user)
 
 	results = &dto.LoginResponseBody{IsAuth: true}
 
