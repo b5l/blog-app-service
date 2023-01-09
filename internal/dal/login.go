@@ -10,11 +10,15 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
-type LoginDAO struct {
+type LoginDAO interface {
+	GetUser(ctx context.Context, username string, password string) (*dto.LoginResponseBody, *errorx.Error)
+}
+
+type loginDAO struct {
 	db *sqlx.DB
 }
 
-func (u *LoginDAO) GetUser(ctx context.Context, username string, password string) (*dto.LoginResponseBody, *errorx.Error) {
+func (u *loginDAO) GetUser(ctx context.Context, username string, password string) (*dto.LoginResponseBody, *errorx.Error) {
 	var results *dto.LoginResponseBody
 	var user model.Login
 	if err := u.db.Get(&user,
@@ -43,8 +47,11 @@ func (u *LoginDAO) GetUser(ctx context.Context, username string, password string
 	return results, nil
 }
 
-func NewLoginDAO(db *sqlx.DB) *LoginDAO {
-	return &LoginDAO{
+// type check
+var _ BlogPostsDAO = &blogPostsDAO{}
+
+func NewLoginDAO(db *sqlx.DB) LoginDAO {
+	return &loginDAO{
 		db: db,
 	}
 }

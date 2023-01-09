@@ -18,11 +18,14 @@ func main() {
 	login := &login.Handler{
 		LoginDAO: dal.NewLoginDAO(DB),
 	}
+	blogPosts := &blogPosts.Handler{
+		BlogPostsDAO: dal.NewBlogPostsDAO(DB),
+	}
 
 	router := gin.Default()
 	api := router.Group("/api")
 	api.POST("/login", login.LoginHandler)
-	api.GET("/blogpost", blogPosts.BlogPostsHandler)
+	api.GET("/blogPosts", blogPosts.BlogPostsHandler)
 
 	router.Run("localhost:8080")
 }
