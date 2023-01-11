@@ -12,20 +12,20 @@ import (
 )
 
 type BlogCreateEditDAO interface {
-	BlogCreateEdit(ctx context.Context, id int, title string, shortDescription string, longDescription string) (*dto.BlogCreateEditResponseBody, *errorx.Error)
+	BlogCreateEdit(ctx context.Context, Id int, Title string, Type string, Description string) (*dto.BlogCreateEditResponseBody, *errorx.Error)
 }
 
 type blogCreateEditDAO struct {
 	db *sqlx.DB
 }
 
-func (u *blogCreateEditDAO) BlogCreateEdit(ctx context.Context, id int, title string, shortDescription string, longDescription string) (*dto.BlogCreateEditResponseBody, *errorx.Error) {
+func (u *blogCreateEditDAO) BlogCreateEdit(ctx context.Context, Id int, Title string, Type string, Description string) (*dto.BlogCreateEditResponseBody, *errorx.Error) {
 	var results *dto.BlogCreateEditResponseBody
 
-	if title == "" {
+	if Title == "" {
 		var getTitle string
 		if err := u.db.Get(&getTitle,
-			`SELECT title FROM blog_posts WHERE id=$1 LIMIT 1`, id,
+			`SELECT title FROM blog_posts WHERE id=$1 LIMIT 1`, Id,
 		); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, &errorx.Error{
@@ -41,13 +41,13 @@ func (u *blogCreateEditDAO) BlogCreateEdit(ctx context.Context, id int, title st
 				}
 			}
 		}
-		title = getTitle
+		Title = getTitle
 	}
 
-	if shortDescription == "" {
-		var getShortDesc string
-		if err := u.db.Get(&getShortDesc,
-			`SELECT short_description FROM blog_posts WHERE id=$1 LIMIT 1`, id,
+	if Type == "" {
+		var getType string
+		if err := u.db.Get(&getType,
+			`SELECT type FROM blog_posts WHERE id=$1 LIMIT 1`, Id,
 		); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, &errorx.Error{
@@ -63,13 +63,13 @@ func (u *blogCreateEditDAO) BlogCreateEdit(ctx context.Context, id int, title st
 				}
 			}
 		}
-		shortDescription = getShortDesc
+		Type = getType
 	}
 
-	if longDescription == "" {
-		var getLongDesc string
-		if err := u.db.Get(&getLongDesc,
-			`SELECT long_description FROM blog_posts WHERE id=$1 LIMIT 1`, id,
+	if Description == "" {
+		var getDescription string
+		if err := u.db.Get(&getDescription,
+			`SELECT description FROM blog_posts WHERE id=$1 LIMIT 1`, Id,
 		); err != nil {
 			if err == sql.ErrNoRows {
 				return nil, &errorx.Error{
@@ -85,27 +85,27 @@ func (u *blogCreateEditDAO) BlogCreateEdit(ctx context.Context, id int, title st
 				}
 			}
 		}
-		longDescription = getLongDesc
+		Description = getDescription
 	}
 
 	create := model.BlogCreate{
-		Title:            title,
-		ShortDescription: shortDescription,
-		LongDescription:  longDescription,
+		Title:       Title,
+		Type:        Type,
+		Description: Description,
 	}
 	edit := model.BlogDetails{
-		Id:               id,
-		Title:            title,
-		ShortDescription: shortDescription,
-		LongDescription:  longDescription,
+		Id:          Id,
+		Title:       Title,
+		Type:        Type,
+		Description: Description,
 	}
 
 	var blogID int
-	err := u.db.Get(&blogID, "SELECT id FROM blog_posts WHERE id=$1 LIMIT 1", id)
+	err := u.db.Get(&blogID, "SELECT id FROM blog_posts WHERE id=$1 LIMIT 1", Id)
 
 	switch err {
 	case nil:
-		_, dbErr := u.db.NamedExec("UPDATE blog_posts SET title = :title, short_description = :short_description, long_description = :long_description WHERE id=:id", edit)
+		_, dbErr := u.db.NamedExec("UPDATE blog_posts SET title = :title, type = :type, description = :description WHERE id=:id", edit)
 		if dbErr != nil {
 			fmt.Println(dbErr)
 
@@ -116,7 +116,7 @@ func (u *blogCreateEditDAO) BlogCreateEdit(ctx context.Context, id int, title st
 			}
 		}
 	case sql.ErrNoRows:
-		_, dbErr := u.db.NamedExec("INSERT INTO blog_posts (title, short_description, long_description) VALUES (:title, :short_description, :long_description)", create)
+		_, dbErr := u.db.NamedExec("INSERT INTO blog_posts (title, type, description) VALUES (:title, :type, :description)", create)
 		if dbErr != nil {
 			fmt.Println(dbErr)
 
