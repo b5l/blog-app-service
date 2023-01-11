@@ -23,69 +23,27 @@ func (u *blogCreateEditDAO) BlogCreateEdit(ctx context.Context, Id int, Title st
 	var results *dto.BlogCreateEditResponseBody
 
 	if Title == "" {
-		var getTitle string
-		if err := u.db.Get(&getTitle,
+		if err := u.db.Get(&Title,
 			`SELECT title FROM blog_posts WHERE id=$1 LIMIT 1`, Id,
 		); err != nil {
-			if err == sql.ErrNoRows {
-				return nil, &errorx.Error{
-					Message:    err.Error(),
-					Details:    "",
-					StatusCode: 404,
-				}
-			} else {
-				return nil, &errorx.Error{
-					Message:    err.Error(),
-					Details:    "",
-					StatusCode: 500,
-				}
-			}
+			Title = ""
 		}
-		Title = getTitle
 	}
 
 	if Type == "" {
-		var getType string
-		if err := u.db.Get(&getType,
+		if err := u.db.Get(&Type,
 			`SELECT type FROM blog_posts WHERE id=$1 LIMIT 1`, Id,
 		); err != nil {
-			if err == sql.ErrNoRows {
-				return nil, &errorx.Error{
-					Message:    err.Error(),
-					Details:    "",
-					StatusCode: 404,
-				}
-			} else {
-				return nil, &errorx.Error{
-					Message:    err.Error(),
-					Details:    "",
-					StatusCode: 500,
-				}
-			}
+			Type = ""
 		}
-		Type = getType
 	}
 
 	if Description == "" {
-		var getDescription string
-		if err := u.db.Get(&getDescription,
+		if err := u.db.Get(&Description,
 			`SELECT description FROM blog_posts WHERE id=$1 LIMIT 1`, Id,
 		); err != nil {
-			if err == sql.ErrNoRows {
-				return nil, &errorx.Error{
-					Message:    err.Error(),
-					Details:    "",
-					StatusCode: 404,
-				}
-			} else {
-				return nil, &errorx.Error{
-					Message:    err.Error(),
-					Details:    "",
-					StatusCode: 500,
-				}
-			}
+			Description = ""
 		}
-		Description = getDescription
 	}
 
 	create := model.BlogCreate{
