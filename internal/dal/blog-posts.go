@@ -21,7 +21,7 @@ func (u *blogPostsDAO) GetBlogPosts(ctx context.Context) ([]dto.BlogPostsObject,
 	results := []dto.BlogPostsObject{}
 
 	if err := u.db.Select(&results,
-		`SELECT id, title, short_description FROM blog_posts`,
+		`SELECT id, title, short_description FROM blog_posts ORDER BY id DESC`,
 	); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, &errorx.Error{
