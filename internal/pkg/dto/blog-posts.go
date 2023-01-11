@@ -5,7 +5,7 @@ type BlogPostsResponseBody struct {
 }
 
 type BlogPostsObject struct {
-	Id               int    `json:"id"`
-	Title            string `json:"title"`
-	ShortDescription string `json:"shortDescription" db:"short_description"`
+	Id    int    `json:"id"`
+	Title string `json:"title"`
+	Type  string `json:"type" db:"type"`
 }

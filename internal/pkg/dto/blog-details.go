@@ -1,8 +1,8 @@
 package dto
 
 type BlogDetailsResponseBody struct {
-	Id               int    `json:"id"`
-	Title            string `json:"title"`
-	ShortDescription string `json:"shortDescription" db:"short_description"`
-	LongDescription  string `json:"longDescription" db:"long_description"`
+	Id          int    `json:"id"`
+	Title       string `json:"title"`
+	Type        string `json:"type" db:"type"`
+	Description string `json:"description" db:"description"`
 }
