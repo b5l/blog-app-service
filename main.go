@@ -2,6 +2,7 @@ package main
 
 import (
 	blogCreate "blog-app-service/internal/api/blog_create"
+	blogDelete "blog-app-service/internal/api/blog_delete"
 	blogDetails "blog-app-service/internal/api/blog_details"
 	blogEdit "blog-app-service/internal/api/blog_edit"
 	blogPosts "blog-app-service/internal/api/blog_posts"
@@ -33,6 +34,9 @@ func main() {
 	blogEdit := &blogEdit.Handler{
 		BlogCreateEditDAO: dal.NewBlogCreateEditDAO(DB),
 	}
+	blogDelete := &blogDelete.Handler{
+		BlogDeleteDAO: dal.NewBlogDeleteDAO(DB),
+	}
 
 	router := gin.Default()
 	api := router.Group("/api")
@@ -40,7 +44,8 @@ func main() {
 	api.GET("/blogPosts", blogPosts.BlogPostsHandler)
 	api.GET("/blogPost/:id", blogDetails.BlogDetailsHandler)
 	api.POST("/blogCreate", blogCreate.BlogCreateHandler)
-	api.PUT("/blogEdit", blogEdit.BlogEditHandler)
+	api.PUT("/blogPost/:id", blogEdit.BlogEditHandler)
+	api.DELETE("/blogPost/:id", blogDelete.BlogDeleteHandler)
 
 	router.Run("localhost:8080")
 }
