@@ -25,11 +25,11 @@ func (h *Handler) BlogEditHandler(c *gin.Context) {
 		return
 	}
 
-	isSuccess, errx := h.BlogCreateEditDAO.BlogCreateEdit(c, getDetails.Id, getDetails.Title, getDetails.Type, getDetails.Description)
+	isSuccessful, errx := h.BlogCreateEditDAO.BlogCreateEdit(c, getDetails.Id, getDetails.Title, getDetails.Type, getDetails.Description)
 
 	if errx != nil {
 		c.JSON(errx.StatusCode, errx)
 	} else {
-		c.JSON(http.StatusOK, isSuccess)
+		c.JSON(http.StatusOK, isSuccessful)
 	}
 }

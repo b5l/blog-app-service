@@ -86,7 +86,7 @@ func (u *blogCreateEditDAO) BlogCreateEdit(ctx context.Context, Id int, Title st
 		}
 	}
 
-	results = &dto.BlogCreateEditResponseBody{IsSuccess: true}
+	results = &dto.BlogCreateEditResponseBody{IsSuccessful: true}
 
 	return results, nil
 }
