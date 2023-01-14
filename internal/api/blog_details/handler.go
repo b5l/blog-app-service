@@ -19,6 +19,7 @@ type Handler struct {
 
 func (h *Handler) BlogDetailsHandler(c *gin.Context) {
 	id := c.Param("id")
+
 	blogDetails, errx := h.BlogDetailsDAO.GetBlogDetails(c, id)
 
 	if errx != nil {
