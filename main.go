@@ -7,6 +7,7 @@ import (
 	blogEdit "blog-app-service/internal/api/blog_edit"
 	blogPosts "blog-app-service/internal/api/blog_posts"
 	"blog-app-service/internal/api/login"
+	signUp "blog-app-service/internal/api/sign_up"
 	"blog-app-service/internal/dal"
 	"blog-app-service/internal/database"
 
@@ -21,6 +22,9 @@ func main() {
 
 	login := &login.Handler{
 		LoginDAO: dal.NewLoginDAO(DB),
+	}
+	signUp := &signUp.Handler{
+		SignUpDAO: dal.NewSignUpDAO(DB),
 	}
 	blogPosts := &blogPosts.Handler{
 		BlogPostsDAO: dal.NewBlogPostsDAO(DB),
@@ -41,6 +45,7 @@ func main() {
 	router := gin.Default()
 	api := router.Group("/api")
 	api.POST("/login", login.LoginHandler)
+	api.POST("/signUp", signUp.SignUpHandler)
 	api.GET("/blogPosts", blogPosts.BlogPostsHandler)
 	api.GET("/blogPost/:id", blogDetails.BlogDetailsHandler)
 	api.POST("/blogCreate", blogCreate.BlogCreateHandler)
