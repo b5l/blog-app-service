@@ -20,7 +20,7 @@ type loginDAO struct {
 
 func (u *loginDAO) GetUser(ctx context.Context, username string, password string) (*dto.LoginResponseBody, *errorx.Error) {
 	var results *dto.LoginResponseBody
-	var user model.Login
+	var user model.LoginSignUp
 	if err := u.db.Get(&user,
 		`SELECT * FROM users
 		WHERE username = $1
@@ -48,7 +48,7 @@ func (u *loginDAO) GetUser(ctx context.Context, username string, password string
 }
 
 // type check
-var _ BlogPostsDAO = &blogPostsDAO{}
+var _ LoginDAO = &loginDAO{}
 
 func NewLoginDAO(db *sqlx.DB) LoginDAO {
 	return &loginDAO{

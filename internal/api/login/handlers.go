@@ -19,7 +19,7 @@ type Handler struct {
 }
 
 func (h *Handler) LoginHandler(c *gin.Context) {
-	var getUser model.Login
+	var getUser model.LoginSignUp
 
 	if err := c.BindJSON(&getUser); err != nil {
 		return
