@@ -12,14 +12,14 @@ import (
 )
 
 type BlogCreateEditDAO interface {
-	BlogCreateEdit(ctx context.Context, Id int, Title string, Type string, Description string) (*dto.BlogCreateEditResponseBody, *errorx.Error)
+	GetBlogCreateEdit(ctx context.Context, Id int, Title string, Type string, Description string) (*dto.BlogCreateEditResponseBody, *errorx.Error)
 }
 
 type blogCreateEditDAO struct {
 	db *sqlx.DB
 }
 
-func (u *blogCreateEditDAO) BlogCreateEdit(ctx context.Context, Id int, Title string, Type string, Description string) (*dto.BlogCreateEditResponseBody, *errorx.Error) {
+func (u *blogCreateEditDAO) GetBlogCreateEdit(ctx context.Context, Id int, Title string, Type string, Description string) (*dto.BlogCreateEditResponseBody, *errorx.Error) {
 	var results *dto.BlogCreateEditResponseBody
 
 	if Title == "" {

@@ -75,7 +75,7 @@ func Test_BlogCreateEdit(t *testing.T) {
 			}
 			u := dal.NewBlogCreateEditDAO(tt.fields.DB)
 
-			got, err := u.BlogCreateEdit(context.Background(), tt.args.Id, tt.args.Title, tt.args.Type, tt.args.Description)
+			got, err := u.GetBlogCreateEdit(context.Background(), tt.args.Id, tt.args.Title, tt.args.Type, tt.args.Description)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("BlogCreateEdit() error = %v, wantErr %v", err, tt.wantErr)
 				return
