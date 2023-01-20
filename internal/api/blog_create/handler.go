@@ -11,25 +11,27 @@ import (
 )
 
 type DAO interface {
-	BlogCreateEdit(ctx context.Context, id int, title string, shortDescription string, longDescription string) (*dto.BlogCreateEditResponseBody, *errorx.Error)
+	GetBlogCreateEdit(ctx context.Context, id int, title string, shortDescription string, longDescription string) (*dto.BlogCreateEditResponseBody, *errorx.Error)
 }
 
 type Handler struct {
 	BlogCreateEditDAO DAO
 }
 
-func (h *Handler) BlogCreateHandler(c *gin.Context) {
-	var getDetails model.BlogDetails
+func (h *Handler) BlogCreateHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var getDetails model.BlogDetails
 
-	if err := c.BindJSON(&getDetails); err != nil {
-		return
-	}
+		if err := c.BindJSON(&getDetails); err != nil {
+			return
+		}
 
-	isSuccessful, errx := h.BlogCreateEditDAO.BlogCreateEdit(c, 0, getDetails.Title, getDetails.Type, getDetails.Description)
+		isSuccessful, errx := h.BlogCreateEditDAO.GetBlogCreateEdit(c, 0, getDetails.Title, getDetails.Type, getDetails.Description)
 
-	if errx != nil {
-		c.JSON(errx.StatusCode, errx)
-	} else {
-		c.JSON(http.StatusOK, isSuccessful)
+		if errx != nil {
+			c.JSON(errx.StatusCode, errx)
+		} else {
+			c.JSON(http.StatusOK, isSuccessful)
+		}
 	}
 }
