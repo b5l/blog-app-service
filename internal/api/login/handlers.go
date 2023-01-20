@@ -18,18 +18,20 @@ type Handler struct {
 	LoginDAO DAO
 }
 
-func (h *Handler) LoginHandler(c *gin.Context) {
-	var getUser model.LoginSignUp
+func (h *Handler) LoginHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var getUser model.LoginSignUp
 
-	if err := c.BindJSON(&getUser); err != nil {
-		return
-	}
+		if err := c.BindJSON(&getUser); err != nil {
+			return
+		}
 
-	isAuth, errx := h.LoginDAO.GetUser(c, getUser.Username, getUser.Password)
+		isAuth, errx := h.LoginDAO.GetUser(c, getUser.Username, getUser.Password)
 
-	if errx != nil {
-		c.JSON(errx.StatusCode, errx)
-	} else {
-		c.JSON(http.StatusOK, isAuth)
+		if errx != nil {
+			c.JSON(errx.StatusCode, errx)
+		} else {
+			c.JSON(http.StatusOK, isAuth)
+		}
 	}
 }

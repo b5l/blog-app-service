@@ -17,12 +17,14 @@ type Handler struct {
 	BlogPostsDAO DAO
 }
 
-func (h *Handler) BlogPostsHandler(c *gin.Context) {
-	blogPosts, errx := h.BlogPostsDAO.GetBlogPosts(c)
+func (h *Handler) BlogPostsHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		blogPosts, errx := h.BlogPostsDAO.GetBlogPosts(c)
 
-	if errx != nil {
-		c.JSON(errx.StatusCode, errx)
-	} else {
-		c.JSON(http.StatusOK, &dto.BlogPostsResponseBody{Data: blogPosts})
+		if errx != nil {
+			c.JSON(errx.StatusCode, errx)
+		} else {
+			c.JSON(http.StatusOK, &dto.BlogPostsResponseBody{Data: blogPosts})
+		}
 	}
 }

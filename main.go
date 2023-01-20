@@ -44,13 +44,13 @@ func main() {
 
 	router := gin.Default()
 	api := router.Group("/api")
-	api.POST("/login", login.LoginHandler)
-	api.POST("/signUp", signUp.SignUpHandler)
-	api.GET("/blogPosts", blogPosts.BlogPostsHandler)
-	api.GET("/blogPost/:id", blogDetails.BlogDetailsHandler)
-	api.POST("/blogCreate", blogCreate.BlogCreateHandler)
-	api.PUT("/blogPost/:id", blogEdit.BlogEditHandler)
-	api.DELETE("/blogPost/:id", blogDelete.BlogDeleteHandler)
+	api.POST("/login", login.LoginHandler())
+	api.POST("/signUp", signUp.SignUpHandler())
+	api.GET("/blogPosts", blogPosts.BlogPostsHandler())
+	api.GET("/blogPost/:id", blogDetails.BlogDetailsHandler())
+	api.POST("/blogCreate", blogCreate.BlogCreateHandler())
+	api.PUT("/blogPost/:id", blogEdit.BlogEditHandler())
+	api.DELETE("/blogPost/:id", blogDelete.BlogDeleteHandler())
 
 	router.Run("localhost:8080")
 }

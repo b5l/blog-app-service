@@ -1,4 +1,4 @@
-package blogPosts
+package blogDetails
 
 import (
 	"blog-app-service/internal/errorx"
@@ -17,14 +17,16 @@ type Handler struct {
 	BlogDetailsDAO DAO
 }
 
-func (h *Handler) BlogDetailsHandler(c *gin.Context) {
-	id := c.Param("id")
+func (h *Handler) BlogDetailsHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id := c.Param("id")
 
-	blogDetails, errx := h.BlogDetailsDAO.GetBlogDetails(c, id)
+		blogDetails, errx := h.BlogDetailsDAO.GetBlogDetails(c, id)
 
-	if errx != nil {
-		c.JSON(errx.StatusCode, errx)
-	} else {
-		c.JSON(http.StatusOK, blogDetails)
+		if errx != nil {
+			c.JSON(errx.StatusCode, errx)
+		} else {
+			c.JSON(http.StatusOK, blogDetails)
+		}
 	}
 }
