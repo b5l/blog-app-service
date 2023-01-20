@@ -1,4 +1,4 @@
-package login
+package signUp
 
 import (
 	"blog-app-service/internal/errorx"
@@ -18,18 +18,20 @@ type Handler struct {
 	SignUpDAO DAO
 }
 
-func (h *Handler) SignUpHandler(c *gin.Context) {
-	var postUser model.LoginSignUp
+func (h *Handler) SignUpHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var postUser model.LoginSignUp
 
-	if err := c.BindJSON(&postUser); err != nil {
-		return
-	}
+		if err := c.BindJSON(&postUser); err != nil {
+			return
+		}
 
-	isSuccessful, errx := h.SignUpDAO.PostUser(c, postUser.Username, postUser.Password)
+		isSuccessful, errx := h.SignUpDAO.PostUser(c, postUser.Username, postUser.Password)
 
-	if errx != nil {
-		c.JSON(errx.StatusCode, errx)
-	} else {
-		c.JSON(http.StatusOK, isSuccessful)
+		if errx != nil {
+			c.JSON(errx.StatusCode, errx)
+		} else {
+			c.JSON(http.StatusOK, isSuccessful)
+		}
 	}
 }
