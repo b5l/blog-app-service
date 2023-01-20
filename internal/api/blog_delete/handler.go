@@ -1,4 +1,4 @@
-package blogCreate
+package blogDelete
 
 import (
 	"blog-app-service/internal/errorx"
@@ -17,14 +17,16 @@ type Handler struct {
 	BlogDeleteDAO DAO
 }
 
-func (h *Handler) BlogDeleteHandler(c *gin.Context) {
-	id := c.Param("id")
+func (h *Handler) BlogDeleteHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		id := c.Param("id")
 
-	isDeleted, errx := h.BlogDeleteDAO.GetBlogDelete(c, id)
+		isDeleted, errx := h.BlogDeleteDAO.GetBlogDelete(c, id)
 
-	if errx != nil {
-		c.JSON(errx.StatusCode, errx)
-	} else {
-		c.JSON(http.StatusOK, isDeleted)
+		if errx != nil {
+			c.JSON(errx.StatusCode, errx)
+		} else {
+			c.JSON(http.StatusOK, isDeleted)
+		}
 	}
 }
